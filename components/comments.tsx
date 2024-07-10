@@ -50,7 +50,6 @@ const Comments = () => {
 
   useEffect(() => {
     if (!canCreate) return;
-    console.log(comments);
     setComments(
       comments.filter(
         (comment) => comment.content !== "" || comment.reaction !== "",
