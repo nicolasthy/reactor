@@ -69,6 +69,14 @@ const Comments = () => {
         setCanCreate(false);
       }}
     >
+      {!comments.length && (
+        <div className="h-full w-full flex flex-col items-center justify-center">
+          <h2 className="text-sm text-slate-500">
+            Click anywhere to add a comment
+          </h2>
+        </div>
+      )}
+
       {comments.map((comment, index) => {
         return (
           <CommentItem
