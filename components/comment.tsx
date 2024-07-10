@@ -3,7 +3,7 @@
 import { RefObject, useRef, useState } from "react";
 import { Comment } from "./comments";
 
-import { autoPlacement, inline, offset, useFloating } from "@floating-ui/react";
+import { flip, inline, offset, useFloating } from "@floating-ui/react";
 import { useClickAway } from "@uidotdev/usehooks";
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -69,7 +69,7 @@ const CommentItem = ({
     elements: {
       reference: ref?.current,
     },
-    middleware: [offset(4), autoPlacement(), inline()],
+    middleware: [offset(4), inline(), flip()],
   });
 
   return (
@@ -86,10 +86,6 @@ const CommentItem = ({
           y: comment.position.y,
           x: comment.position.x,
         }}
-        onClick={() => {
-          if (isCreating) return;
-          setCanCreate(false);
-        }}
       >
         <div className="flex gap-x-2">
           <div
@@ -99,7 +95,7 @@ const CommentItem = ({
             <span>{comment.reaction}</span>
           </div>
           <AnimatePresence mode="popLayout">
-            {isHovered && comment.content && (
+            {isHovered && (comment.content || comment.reaction) && (
               <motion.div
                 layout
                 className="text-sm text-white py-2 pr-8 flex flex-col overflow-hidden"
@@ -108,7 +104,8 @@ const CommentItem = ({
                 exit={{ opacity: 0 }}
               >
                 <span className="text-xs text-slate-400 text-nowrap">
-                  Added {comment.createdAt.fromNow()}
+                  {comment.content ? "Commented" : "Reacted"}{" "}
+                  {comment.createdAt.fromNow()}
                 </span>
                 <span>{comment.content}</span>
               </motion.div>
